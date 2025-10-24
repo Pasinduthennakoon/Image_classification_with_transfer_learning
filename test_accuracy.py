@@ -6,10 +6,10 @@ IMAGE_SIZE = (128, 128)
 
 # Load test dataset
 test_data_dir = "data/cats_dogs/test"
-test_data = tf.keras.utils.image_dataset_from_directory(
-    test_data_dir,
-    batch_size=BATCH_SIZE,
-    image_size=IMAGE_SIZE
+
+test_data = tf.keras.utils.image_dataset_from_directory(test_data_dir,
+                                                        batch_size=BATCH_SIZE,
+                                                        image_size=IMAGE_SIZE
 )
 
 # Normalize (important to match training)
