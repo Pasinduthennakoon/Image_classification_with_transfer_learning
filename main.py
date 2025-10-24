@@ -36,7 +36,7 @@ train_data = train_data.map(lambda x,y:(x/255,y))
 validation_data = validation_data.map(lambda x,y:(x/255,y))
 test_data = test_data.map(lambda x,y:(x/255,y))
 
-#transfer learning
+#transfer learning(download pretrained model)
 pretrained_model = tf.keras.applications.xception.Xception(include_top=False,
                                                            input_shape=(128, 128, 3),
                                                            weights='imagenet',
@@ -44,3 +44,21 @@ pretrained_model = tf.keras.applications.xception.Xception(include_top=False,
 for layer in pretrained_model.layers:
     layer.trainable = False
 
+#create model
+model = tf.keras.models.Sequential()
+
+model.add(pretrained_model)
+
+model.add(tf.keras.layers.Flatten())
+
+model.add(tf.keras.layers.Dense(units=128, activation='relu'))
+model.add(tf.keras.layers.Dense(units=128, activation='relu'))
+model.add(tf.keras.layers.Dense(units=32, activation='relu'))
+model.add(tf.keras.layers.Dense(units=1, activation='sigmoid'))
+
+model.summary()
+
+#compile model
+model.compile(optimizer = tf.keras.optimizers.Adam(),
+              loss = tf.keras.losses.BinaryCrossentropy(),
+              metrics = ['accuracy'])
