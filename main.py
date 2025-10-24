@@ -30,3 +30,17 @@ validation_data = tf.keras.utils.image_dataset_from_directory(train_data_dir,
 test_data = tf.keras.utils.image_dataset_from_directory(test_data_dir,
                                                         batch_size=BATCH_SIZE,
                                                         image_size=IMAGE_SIZE)
+
+#data feature scaling
+train_data = train_data.map(lambda x,y:(x/255,y))
+validation_data = validation_data.map(lambda x,y:(x/255,y))
+test_data = test_data.map(lambda x,y:(x/255,y))
+
+#transfer learning
+pretrained_model = tf.keras.applications.xception.Xception(include_top=False,
+                                                           input_shape=(128, 128, 3),
+                                                           weights='imagenet',
+                                                           pooling='max')
+for layer in pretrained_model.layers:
+    layer.trainable = False
+
