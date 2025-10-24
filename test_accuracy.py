@@ -9,8 +9,7 @@ test_data_dir = "data/cats_dogs/test"
 
 test_data = tf.keras.utils.image_dataset_from_directory(test_data_dir,
                                                         batch_size=BATCH_SIZE,
-                                                        image_size=IMAGE_SIZE
-)
+                                                        image_size=IMAGE_SIZE)
 
 # Normalize (important to match training)
 test_data = test_data.map(lambda x, y: (x / 255.0, y))
