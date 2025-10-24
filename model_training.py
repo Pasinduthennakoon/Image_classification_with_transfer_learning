@@ -2,6 +2,7 @@ import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+import time
 
 #data batch size
 BATCH_SIZE = 32
@@ -56,9 +57,33 @@ model.add(tf.keras.layers.Dense(units=128, activation='relu'))
 model.add(tf.keras.layers.Dense(units=32, activation='relu'))
 model.add(tf.keras.layers.Dense(units=1, activation='sigmoid'))
 
-model.summary()
+# model.summary()
 
 #compile model
 model.compile(optimizer = tf.keras.optimizers.Adam(),
               loss = tf.keras.losses.BinaryCrossentropy(),
               metrics = ['accuracy'])
+
+#train model
+start_time = time.time()
+history = model.fit(train_data,
+                    epochs=3,
+                    validation_data=validation_data)
+end_time = time.time()
+print(f"Total time for training: {(end_time - start_time):.3f} seconds")
+
+#plot acuuracy vs validation accuracy
+fig = plt.figure()
+plt.plot(history.history['accuracy'], color='teal', label='accuracy')
+plt.plot(history.history['val_accuracy'], color='orange', label='val_accuracy')
+fig.suptitle('Accuracy', fontsize=20)
+plt.legend()
+plt.show()
+
+#plot loss vs validation lass
+fig = plt.figure()
+plt.plot(history.history['loss'], color='teal', label='loss')
+plt.plot(history.history['val_loss'], color='orange', label='val_loss')
+fig.suptitle('Loss', fontsize=20)
+plt.legend()
+plt.show()
